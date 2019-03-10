@@ -3,7 +3,7 @@ import utils
 
 
 def load_iris_data():
-    return load('iris_data')
+    return load('data/iris_data')
 
 
 def load(file):
