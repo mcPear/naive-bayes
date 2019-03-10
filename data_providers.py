@@ -2,6 +2,18 @@ import csv, random
 import utils
 
 
+def load_diabetes_data():
+    return load('data/diabetes_data')
+
+
+def load_glass_data():
+    return load('data/glass_data')
+
+
+def load_wine_data():
+    return load('data/wine_data')
+
+
 def load_iris_data():
     return load('data/iris_data')
 
