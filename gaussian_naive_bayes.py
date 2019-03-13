@@ -67,8 +67,8 @@ class GaussianNaiveBayes(BaseEstimator):
         # print(f"get_attr_count: {self.attr_count}")
         # print(f"class_probs: {self.class_probs}")
         # print(f"classes: {self.classes}")
-        # print(f"get_attr_measures(data): {self.attr_measures}")
-        # print(f"get_attr_by_class_measures(data): {self.attr_by_class_measures}")
+        # print(f"get_attr_probs(data): {self.attr_probs}")
+        # print(f"get_attr_by_class_probs(data): {self.attr_by_class_probs}")
         return self
 
     def classify_many(self, X):
