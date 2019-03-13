@@ -33,7 +33,7 @@ def ten_folds_score_discrete(data, name, stratified=True):
     print(f"{name} - mean score: {mean_score}")
 
 ten_folds_score_discrete(dp.load_iris_data(), 'iris')
-# ten_folds_score(dp.load_iris_data(), 'iris')
+ten_folds_score(dp.load_iris_data(), 'iris')
 # ten_folds_score(dp.load_iris_data(), 'iris', False)
 # single_split_score(dp.load_iris_data(), 'iris')
 # ten_folds_score(dp.load_diabetes_data(), 'diabetes')

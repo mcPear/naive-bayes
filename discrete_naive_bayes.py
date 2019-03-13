@@ -1,33 +1,15 @@
-from sklearn.base import BaseEstimator
 import utils
 import numpy as np
-import scipy.stats
 from bin import Bin
+from abstract_naive_bayes import AbstractNaiveBayes
 
 
-class DiscreteNaiveBayes(BaseEstimator):
+class DiscreteNaiveBayes(AbstractNaiveBayes):
 
     def __init__(self, classes,
                  bins_count):  # library requirement is to explicity put parameters to be copied during cross-validation process
         self.classes = classes
         self.bins_count = bins_count
-
-    def get_attr_count(self, X):
-        return len(X[0])
-
-    def get_class_probs(self, X, y):  # fixme what about classes missing in train_data ??
-        data = utils.merge_attrs(X, y)
-        class_index = utils.get_class_index(data)
-        result = dict()
-        for record in data:
-            class_key = record[class_index]
-            if class_key in result:
-                result[class_key] += 1
-            else:
-                result[class_key] = 1
-        for key in result:
-            result[key] = result[key] / len(data)
-        return result
 
     def get_attr_probs(self, X, attr_bins):
 
@@ -100,22 +82,6 @@ class DiscreteNaiveBayes(BaseEstimator):
 
         return self
 
-    def classify_many(self, X):
-        y = []
-        for x in X:
-            y.append(self.classify(x))
-        return y
-
-    def classify(self, x):
-        class_x_probs = dict()
-        for clazz in self.get_params(False)['classes']:
-            class_x_probs[clazz] = self.get_class_x_prob(x, clazz)
-        return max(class_x_probs, key=class_x_probs.get)
-
-    def get_class_x_prob(self, x, clazz):
-        return self.class_probs[clazz] * self.get_x_class_prob(x, clazz) / self.get_x_prob(x)
-        # return self.get_x_class_prob(x, clazz) # also works...
-
     def get_x_class_prob(self, x, clazz):
         probs = self.attr_by_class_probs[clazz]
         prob = self.prob(x[0], probs[0])
@@ -135,7 +101,3 @@ class DiscreteNaiveBayes(BaseEstimator):
             if bin.min <= x < bin.max:
                 return bin.prob
         return 0.0001  # fixed minimum prob for values out of discretization bins range
-
-    # override
-    def predict(self, X):
-        return self.classify_many(X)

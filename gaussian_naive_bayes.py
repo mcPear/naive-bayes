@@ -1,30 +1,14 @@
-from sklearn.base import BaseEstimator
 import utils
 import numpy as np
 import scipy.stats
+from abstract_naive_bayes import AbstractNaiveBayes
 
 
-class GaussianNaiveBayes(BaseEstimator):
+class GaussianNaiveBayes(AbstractNaiveBayes):
 
-    def __init__(self, classes): #library requirement is to explicity put parameters to be copied during cross-validaion process
+    def __init__(self,
+                 classes):  # library requirement is to explicity put parameters to be copied during cross-validaion process
         self.classes = classes
-
-    def get_attr_count(self, X):
-        return len(X[0])
-
-    def get_class_probs(self, X, y):
-        data = utils.merge_attrs(X, y)
-        class_index = utils.get_class_index(data)
-        result = dict()
-        for record in data:
-            class_key = record[class_index]
-            if class_key in result:
-                result[class_key] += 1
-            else:
-                result[class_key] = 1
-        for key in result:
-            result[key] = result[key] / len(data)
-        return result
 
     def get_attr_measures(self, X, y):
         data = utils.merge_attrs(X, y)
@@ -57,7 +41,7 @@ class GaussianNaiveBayes(BaseEstimator):
 
         return result
 
-    #override
+    # override
     def fit(self, X, y):
         self.attr_count = self.get_attr_count(X)
         self.class_probs = self.get_class_probs(X, y)
@@ -70,22 +54,6 @@ class GaussianNaiveBayes(BaseEstimator):
         # print(f"get_attr_probs(data): {self.attr_probs}")
         # print(f"get_attr_by_class_probs(data): {self.attr_by_class_probs}")
         return self
-
-    def classify_many(self, X):
-        y = []
-        for x in X:
-            y.append(self.classify(x))
-        return y
-
-    def classify(self, x):
-        class_x_probs = dict()
-        for clazz in self.get_params(False)['classes']:
-            class_x_probs[clazz] = self.get_class_x_prob(x, clazz)
-        return max(class_x_probs, key=class_x_probs.get)
-
-    def get_class_x_prob(self, x, clazz):
-        return self.class_probs[clazz] * self.get_x_class_prob(x, clazz) / self.get_x_prob(x)
-        # return get_x_class_prob(x, clazz) also works...
 
     def get_x_class_prob(self, x, clazz):
         measures = self.attr_by_class_measures[clazz]
@@ -114,7 +82,3 @@ class GaussianNaiveBayes(BaseEstimator):
         #     print(f"when x: {x}, mean: {mean}, std: {std}")
         # print(prob)
         return prob
-
-    # override
-    def predict(self, X):
-        return self.classify_many(X)
