@@ -6,6 +6,9 @@ import scipy.stats
 
 class GaussianNaiveBayes(BaseEstimator):
 
+    def __init__(self, classes): #library requirement is to explicity put parameters to be copied during cross-validaion process
+        self.classes = classes
+
     def get_attr_count(self, X):
         return len(X[0])
 
@@ -22,9 +25,6 @@ class GaussianNaiveBayes(BaseEstimator):
         for key in result:
             result[key] = result[key] / len(data)
         return result
-
-    def get_classes(self, y):
-        return list(set(y))
 
     def get_attr_measures(self, X, y):
         data = utils.merge_attrs(X, y)
@@ -57,9 +57,9 @@ class GaussianNaiveBayes(BaseEstimator):
 
         return result
 
+    #override
     def fit(self, X, y):
         self.attr_count = self.get_attr_count(X)
-        self.classes = self.get_classes(y)
         self.class_probs = self.get_class_probs(X, y)
         self.attr_measures = self.get_attr_measures(X, y)
         self.attr_by_class_measures = self.get_attr_by_class_measures(X, y)
@@ -79,7 +79,7 @@ class GaussianNaiveBayes(BaseEstimator):
 
     def classify(self, x):
         class_x_probs = dict()
-        for clazz in self.classes:
+        for clazz in self.get_params(False)['classes']:
             class_x_probs[clazz] = self.get_class_x_prob(x, clazz)
         return max(class_x_probs, key=class_x_probs.get)
 
@@ -115,5 +115,6 @@ class GaussianNaiveBayes(BaseEstimator):
         # print(prob)
         return prob
 
+    # override
     def predict(self, X):
         return self.classify_many(X)
