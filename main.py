@@ -1,50 +1,38 @@
 from gaussian_naive_bayes import GaussianNaiveBayes
-from discrete_naive_bayes import DiscreteNaiveBayes
+from width_discrete_naive_bayes import WidthDiscreteNaiveBayes
+from frequency_discrete_naive_bayes import FrequencyDiscreteNaiveBayes
 import validation
 import data_providers as dp
 import utils
 
 
-def ten_folds_score(data, name, stratified=True):
-    classes = list(
-        set(utils.horizontal_split(data)[1]))  # it's important to recognize classes from both training and test sets
-    mean_score = validation.ten_fold(data, GaussianNaiveBayes(classes), 'f1_macro', stratified)
-    print(f"{name} - mean score: {mean_score}")
+def score(data, name, estimator_const, est_param, cross_val=True, stratified=True):
+    attrs, classes = utils.horizontal_split(data)
+    attr_ranges = utils.attr_ranges(attrs)
+    unique_classes = utils.unique_classes(
+        classes)  # it's important to recognize classes from both training and test sets
+    estimator = estimator_const(unique_classes, attr_ranges, est_param)
+    scoring = 'f1_macro'
+    score = validation.ten_fold(data, estimator, scoring, stratified) \
+        if cross_val else validation.single_split(data, estimator, scoring)
+    # print(f"{name} - " + ("mean " if cross_val else "") + f"score: {score}")
+    return score
 
 
-def single_split_score(data, name):
-    classes = list(
-        set(utils.horizontal_split(data)[1]))  # it's important to recognize classes from both training and test sets
-    score = validation.ten_fold(data, GaussianNaiveBayes(classes), 'f1_macro')
-    print(f"{name} - score: {score}")
-
-def single_split_score_doscrete(data, name):
-    classes = list(
-        set(utils.horizontal_split(data)[
-                1]))  # it's important to recognize classes from both training and test sets
-    score = validation.ten_fold(data, DiscreteNaiveBayes(classes, 5), 'f1_macro')
-    print(f"{name} - score: {score}")
-
-def ten_folds_score_discrete(data, name, stratified=True):
-    classes = list(
-        set(utils.horizontal_split(data)[
-                1]))  # it's important to recognize classes from both training and test sets
-    mean_score = validation.ten_fold(data, DiscreteNaiveBayes(classes, 10), 'f1_macro', stratified)
-    print(f"{name} - mean score: {mean_score}")
-
-ten_folds_score_discrete(dp.load_iris_data(), 'iris')
-ten_folds_score(dp.load_iris_data(), 'iris')
-# ten_folds_score(dp.load_iris_data(), 'iris', False)
-# single_split_score(dp.load_iris_data(), 'iris')
-# ten_folds_score(dp.load_diabetes_data(), 'diabetes')
-# ten_folds_score(dp.load_glass_data(), 'glass')  # fixme problematic
-# ten_folds_score(dp.load_wine_data(), 'wine')
+max_score = 0
+for i in range(1000):
+    score1 = score(dp.load_glass_data(), 'glass', WidthDiscreteNaiveBayes, i + 1, stratified=True)
+    if max_score < score1:
+        max_score = score1
+        print(f"{max_score} {i}")
 
 # todo
-# - Equal width discretization
-# - Equal frequency discretization
-# - be aware od 0 probs, increase all by one occurence
-
-# - include all classes in get_class_probs
+# - 3rd discretization
 # various measures - Confusion matrix, Accuracy, Precision, Recall and Fscore
 # implement measures and understand F-score error at glasses
+
+# params
+# wine, width - 4
+# diabetes, width - 6
+# iris, width - 7
+# glass, width - 5 #fixme warns

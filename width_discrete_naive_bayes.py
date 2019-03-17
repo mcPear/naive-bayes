@@ -2,13 +2,15 @@ import utils
 import numpy as np
 from bin import Bin
 from abstract_naive_bayes import AbstractNaiveBayes
+from verbose_exception import VerboseException
 
 
-class DiscreteNaiveBayes(AbstractNaiveBayes):
+class WidthDiscreteNaiveBayes(AbstractNaiveBayes):
 
-    def __init__(self, classes,
+    def __init__(self, classes, attr_ranges,
                  bins_count):  # library requirement is to explicity put parameters to be copied during cross-validation process
         self.classes = classes
+        self.attr_ranges = attr_ranges
         self.bins_count = bins_count
 
     def get_attr_probs(self, X, attr_bins):
@@ -20,18 +22,21 @@ class DiscreteNaiveBayes(AbstractNaiveBayes):
                     min = attr_bins[i][l].min
                     max = attr_bins[i][l].max
                     val = X[j][i]
-                    if min <= val < max:
+                    if min <= val <= max:
                         attr_bins[i][l].counter += 1
 
-        # fix all bins counters with +1 if zero
+        size = len(X)  # will be increased, because of smoothing
+
+        # fix all bins counters with +1 if zero (smoothing)
         for i in range(self.attr_count):
             for l in range(len(attr_bins[i])):
                 bin = attr_bins[i][l]
                 if bin.counter == 0:
                     bin.counter += 1
+                    size += 1
+        # print(attr_bins)
 
         # fill probs
-        size = len(X)
         for i in range(self.attr_count):
             for j in range(len(X)):
                 for l in range(len(attr_bins[i])):
@@ -52,19 +57,17 @@ class DiscreteNaiveBayes(AbstractNaiveBayes):
                 result[class_key] = [record]
         for key in result:
             class_X, class_y = utils.horizontal_split(result[key])
-            result[key] = self.get_attr_probs(class_X, self.get_attr_bins(X))
+            result[key] = self.get_attr_probs(class_X, self.get_attr_bins())
 
         return result
 
-    def get_attr_bins(self, X):
+    def get_attr_bins(self):
         attr_bins = []
         k = self.get_params()['bins_count']
-        mins = np.min(X, 0)
-        maxs = np.max(X, 0)
+        attr_ranges = self.get_params()['attr_ranges']
         for i in range(self.attr_count):
             bins = []
-            min = mins[i]
-            max = maxs[i]
+            min, max = attr_ranges[i]
             width = (max - min) / k
             while min < max:
                 bins.append(Bin(min, min + width))
@@ -77,7 +80,7 @@ class DiscreteNaiveBayes(AbstractNaiveBayes):
 
         self.attr_count = self.get_attr_count(X)
         self.class_probs = self.get_class_probs(X, y)
-        self.attr_probs = self.get_attr_probs(X, self.get_attr_bins(X))
+        self.attr_probs = self.get_attr_probs(X, self.get_attr_bins())
         self.attr_by_class_probs = self.get_attr_by_class_probs(X, y)
 
         return self
@@ -98,6 +101,6 @@ class DiscreteNaiveBayes(AbstractNaiveBayes):
 
     def prob(self, x, bins):
         for bin in bins:
-            if bin.min <= x < bin.max:
+            if bin.min <= x <= bin.max:
                 return bin.prob
-        return 0.0001  # fixed minimum prob for values out of discretization bins range
+        raise VerboseException(f"Value {x} is out of bins range! Learn me on full range of data.")

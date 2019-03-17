@@ -7,7 +7,7 @@ class Bin:
         self.prob = None
 
     def __str__(self):
-        return f"[counter: {self.counter}, prob: {self.prob}]"
+        return f"[min: {self.min},max: {self.max},counter: {self.counter}, prob: {self.prob}]"
 
     def __repr__(self):
         return self.__str__()

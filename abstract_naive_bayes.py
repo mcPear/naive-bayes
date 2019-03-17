@@ -33,9 +33,11 @@ class AbstractNaiveBayes(BaseEstimator):
         class_x_probs = dict()
         for clazz in self.get_params(False)['classes']:
             class_x_probs[clazz] = self.get_class_x_prob(x, clazz)
+        # print(class_x_probs)
         return max(class_x_probs, key=class_x_probs.get)
 
     def get_class_x_prob(self, x, clazz):
+        # print(f"{self.class_probs[clazz]} | {self.get_x_class_prob(x, clazz)} | {self.get_x_prob(x)}")
         return self.class_probs[clazz] * self.get_x_class_prob(x, clazz) / self.get_x_prob(x)
         # return self.get_x_class_prob(x, clazz) # also works...
 

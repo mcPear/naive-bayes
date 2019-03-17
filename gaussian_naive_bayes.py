@@ -7,7 +7,7 @@ from abstract_naive_bayes import AbstractNaiveBayes
 class GaussianNaiveBayes(AbstractNaiveBayes):
 
     def __init__(self,
-                 classes):  # library requirement is to explicity put parameters to be copied during cross-validaion process
+                 classes, plug1, plug2):  # library requirement is to explicity put parameters to be copied during cross-validaion process
         self.classes = classes
 
     def get_attr_measures(self, X, y):
