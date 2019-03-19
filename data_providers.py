@@ -1,5 +1,7 @@
 import csv, random
 import utils
+from sklearn.datasets import load_iris
+import numpy as np
 
 
 def load_diabetes_data():
@@ -15,7 +17,10 @@ def load_wine_data():
 
 
 def load_iris_data():
-    return load('data/iris_data')
+    iris = load_iris()
+    X, y = [[elem for elem in record] for record in iris.data], np.asarray(iris.target)
+    # print(X)
+    return utils.merge_attrs(X, y)
 
 
 def load(file):

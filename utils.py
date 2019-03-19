@@ -1,4 +1,6 @@
 import copy
+from mdlp.discretization import MDLP
+import bin
 
 
 # assumption that class is always the last attribute
@@ -37,3 +39,12 @@ def merge_attrs(X, y):
         result.append(copy.deepcopy(X[i]))
         result[i].append(y[i])
     return result
+
+
+def get_entropy_intervals(data):
+    X, y = horizontal_split(data)
+    attr_count = len(X[0])
+    transformer = MDLP()
+    X_disc = transformer.fit_transform(X, y)
+    attr_intervals = [list(set(transformer.cat2intervals(X_disc, i))) for i in range(attr_count)]
+    return [[bin.from_interval(j) for j in i] for i in attr_intervals]

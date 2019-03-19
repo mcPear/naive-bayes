@@ -7,9 +7,8 @@ import numpy as np
 import utils
 
 
-def ten_fold(data, estimator, scoring, stratified=True):
+def k_fold(data, estimator, scoring, k, stratified=True):
     attrs, classes = utils.horizontal_split(data)
-    k = 10
     cv = StratifiedKFold(n_splits=k, shuffle=True) if stratified else KFold(n_splits=k, shuffle=True)
     scores = cross_val_score(estimator, attrs, classes, cv=cv, scoring=scoring)
     mean_score = np.mean(scores)
