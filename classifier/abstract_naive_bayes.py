@@ -43,7 +43,7 @@ class AbstractNaiveBayes(BaseEstimator):
 
     def get_class_x_prob(self, x, clazz):
         # print(f"{self.class_probs[clazz]} | {self.get_x_class_prob(x, clazz)} | {self.get_x_prob(x)}")
-        return self.class_probs[clazz] * self.get_x_class_prob(x, clazz) / self.get_x_prob(x)
+        return self.class_probs[clazz] * self.get_x_class_prob(x, clazz) #/ self.get_x_prob(x)
         # return self.get_x_class_prob(x, clazz) # also works...
 
     # override
