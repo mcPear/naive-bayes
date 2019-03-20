@@ -7,8 +7,8 @@ from verbose_exception import VerboseException
 
 class WidthDiscreteNaiveBayes(AbstractNaiveBayes):
 
-    def __init__(self, classes, attr_ranges,
-                 bins_count):  # library requirement is to explicity put parameters to be copied during cross-validation process
+    def __init__(self, classes, bins_count, attr_ranges
+                 ):  # library requirement is to explicity put parameters to be copied during cross-validation process
         self.classes = classes
         self.attr_ranges = attr_ranges
         self.bins_count = bins_count

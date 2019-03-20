@@ -5,13 +5,13 @@ from abstract_naive_bayes import AbstractNaiveBayes
 from verbose_exception import VerboseException
 import copy
 
+
 # https://www.ijcai.org/Proceedings/93-2/Papers/022.pdf
 class EntropyDiscreteNaiveBayes(AbstractNaiveBayes):
 
-    def __init__(self, classes, attr_ranges,
-                 bins):  # library requirement is to explicity put parameters to be copied during cross-validation process
+    def __init__(self, classes,
+                 bins, plug):  # library requirement is to explicity put parameters to be copied during cross-validation process
         self.classes = classes
-        self.attr_ranges = attr_ranges
         self.bins = bins
 
     def empty_bins(self):
@@ -73,7 +73,6 @@ class EntropyDiscreteNaiveBayes(AbstractNaiveBayes):
         self.class_probs = self.get_class_probs(X, y)
         self.attr_probs = self.get_attr_probs(X, self.empty_bins())
         self.attr_by_class_probs = self.get_attr_by_class_probs(X, y)
-
 
         return self
 

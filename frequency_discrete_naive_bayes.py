@@ -7,8 +7,8 @@ from verbose_exception import VerboseException
 
 class FrequencyDiscreteNaiveBayes(AbstractNaiveBayes):
 
-    def __init__(self, classes, attr_ranges,
-                 frequency):  # library requirement is to explicity put parameters to be copied during cross-validation process
+    def __init__(self, classes, frequency, attr_ranges
+                 ):  # library requirement is to explicity put parameters to be copied during cross-validation process
         self.classes = classes
         self.attr_ranges = attr_ranges
         self.frequency = frequency
