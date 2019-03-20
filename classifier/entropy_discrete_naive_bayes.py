@@ -8,7 +8,8 @@ import copy
 class EntropyDiscreteNaiveBayes(AbstractNaiveBayes):
 
     def __init__(self, classes,
-                 bins, plug):  # library requirement is to explicity put parameters to be copied during cross-validation process
+                 bins,
+                 plug):  # library requirement is to explicity put parameters to be copied during cross-validation process
         self.classes = classes
         self.bins = bins
 
@@ -41,10 +42,10 @@ class EntropyDiscreteNaiveBayes(AbstractNaiveBayes):
 
         # fill probs
         for i in range(self.attr_count):
-            for j in range(len(X)):
-                for l in range(len(attr_bins[i])):
-                    bin = attr_bins[i][l]
-                    bin.prob = bin.counter / sizes[i]
+            for l in range(len(attr_bins[i])):
+                bin = attr_bins[i][l]
+                bin.prob = bin.counter / sizes[i]
+                # print(bin.prob)
 
         return attr_bins
 

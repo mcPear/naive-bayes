@@ -26,6 +26,8 @@ def attr_ranges(attrs):
 
 
 def horizontal_split(data):
+    if not data:
+        return [[], []]
     size = len(data[0])
     attrs = [record[:size - 1] for record in data]
     classes_nested = [record[size - 1:] for record in data]  # can flat it here instead of extra line below

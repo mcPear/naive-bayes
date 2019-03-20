@@ -62,11 +62,7 @@ def different_data_splits_comparsion():
             print(result[ki][si], end=' ')
         print()
 
-
-data_set = dp.load_wine_data()
-random.shuffle(data_set)
-score(data_set, EntropyDiscreteNaiveBayes, utils.get_entropy_intervals(data_set))
-
+discretization_comparsion()
 # different_data_splits_comparsion()
 
 # testowanie metod dyskretyzacji (tu można dorzucić gaussa i wybrać zbiór)
