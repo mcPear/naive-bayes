@@ -1,6 +1,6 @@
 import copy
 from mdlp.discretization import MDLP
-import bin
+from util import bin
 
 
 # assumption that class is always the last attribute

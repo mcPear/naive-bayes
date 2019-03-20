@@ -1,5 +1,5 @@
 from sklearn.base import BaseEstimator
-import utils
+from util import utils
 
 
 class AbstractNaiveBayes(BaseEstimator):

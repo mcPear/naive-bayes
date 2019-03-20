@@ -1,10 +1,8 @@
-from gaussian_naive_bayes import GaussianNaiveBayes
-from width_discrete_naive_bayes import WidthDiscreteNaiveBayes
-from frequency_discrete_naive_bayes import FrequencyDiscreteNaiveBayes
-from entropy_discrete_naive_bayes import EntropyDiscreteNaiveBayes
-import validation
-import data_providers as dp
-import utils
+from classifier.gaussian_naive_bayes import GaussianNaiveBayes
+from classifier.width_discrete_naive_bayes import WidthDiscreteNaiveBayes
+from classifier.frequency_discrete_naive_bayes import FrequencyDiscreteNaiveBayes
+from classifier.entropy_discrete_naive_bayes import EntropyDiscreteNaiveBayes
+from util import validation, utils, data_providers as dp
 import random
 
 

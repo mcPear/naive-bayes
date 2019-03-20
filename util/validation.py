@@ -1,11 +1,10 @@
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import KFold
-from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import train_test_split
 from sklearn.metrics.scorer import get_scorer
 import numpy as np
-import utils
+from util import utils
 
 
 def k_fold(data, estimator, scoring, k, stratified=True):

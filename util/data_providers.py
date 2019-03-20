@@ -1,5 +1,5 @@
 import csv, random
-import utils
+from util import utils
 from sklearn.datasets import load_iris
 import numpy as np
 

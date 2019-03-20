@@ -1,8 +1,6 @@
-import utils
-import numpy as np
-from bin import Bin
-from abstract_naive_bayes import AbstractNaiveBayes
-from verbose_exception import VerboseException
+from util import utils
+from classifier.abstract_naive_bayes import AbstractNaiveBayes
+from util.verbose_exception import VerboseException
 import copy
 
 

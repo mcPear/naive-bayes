@@ -1,7 +1,7 @@
-import utils
+from util import utils
 import numpy as np
 import scipy.stats
-from abstract_naive_bayes import AbstractNaiveBayes
+from classifier.abstract_naive_bayes import AbstractNaiveBayes
 
 
 class GaussianNaiveBayes(AbstractNaiveBayes):
