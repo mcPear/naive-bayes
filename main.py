@@ -62,8 +62,10 @@ def different_data_splits_comparsion():
             print(result[ki][si], end=' ')
         print()
 
-discretization_comparsion()
-# different_data_splits_comparsion()
+# find_discretization_param(dp.load_wine_data())
+# discretization_comparsion()
+# on_many_datasets_comparsion()
+different_data_splits_comparsion()
 
 # testowanie metod dyskretyzacji (tu można dorzucić gaussa i wybrać zbiór)
 # badanie klasyfikatora na 3 różnych zbiorach
