@@ -1,5 +1,6 @@
 from sklearn.base import BaseEstimator
 from util import utils
+import copy
 
 
 class AbstractNaiveBayes(BaseEstimator):
@@ -24,7 +25,7 @@ class AbstractNaiveBayes(BaseEstimator):
         classes = self.get_params()['classes']
         result = dict()
         for class_name in classes:
-            result[class_name] = empty_elem
+            result[class_name] = copy.deepcopy(empty_elem)
         return result
 
     def classify_many(self, X):

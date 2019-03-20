@@ -44,25 +44,30 @@ def find_discretization_param(data_set):
             print(f"{max_score} {i + 1}")
 
 
-def different_data_splits_comparsion(): #todo zrob jeszcze raz bo shufflowałem zawsze
+def different_data_splits_comparsion():
     result = []
     data_set = dp.load_glass_data()
-    # random.shuffle(data_set)
+    data_set_shuff = dp.load_glass_data()
+    random.shuffle(data_set_shuff)
     for k in [2, 3, 5, 10]:
-        # random.shuffle(data_set)
-        print(f"not stratified, k: {k}")
         sns = score(data_set, EntropyDiscreteNaiveBayes, utils.get_entropy_intervals(data_set), k=k, stratified=False)
-        print(f"stratified, k: {k}")
         ss = score(data_set, EntropyDiscreteNaiveBayes, utils.get_entropy_intervals(data_set), k=k)
-        result.append([sns, ss])
+        sns_shuff = score(data_set_shuff, EntropyDiscreteNaiveBayes, utils.get_entropy_intervals(data_set), k=k,
+                          stratified=False)
+        ss_shuff = score(data_set_shuff, EntropyDiscreteNaiveBayes, utils.get_entropy_intervals(data_set), k=k)
+        result.append([ss, sns, ss_shuff, sns_shuff])
     # todo single split
-    for si in range(2):
+    for si in range(len(result[0])):
         for ki in range(len(result)):
             print(result[ki][si], end=' ')
         print()
 
 
-different_data_splits_comparsion()
+data_set = dp.load_wine_data()
+random.shuffle(data_set)
+score(data_set, EntropyDiscreteNaiveBayes, utils.get_entropy_intervals(data_set))
+
+# different_data_splits_comparsion()
 
 # testowanie metod dyskretyzacji (tu można dorzucić gaussa i wybrać zbiór)
 # badanie klasyfikatora na 3 różnych zbiorach

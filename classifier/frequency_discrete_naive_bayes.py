@@ -43,7 +43,7 @@ class FrequencyDiscreteNaiveBayes(AbstractNaiveBayes):
             attr_bins.append(bins)
         # print(attr_bins)
 
-        size = len(X)
+        sizes = [len(X)] * self.attr_count
 
         # increment all bins counters if zero
         for i in range(self.attr_count):
@@ -51,14 +51,14 @@ class FrequencyDiscreteNaiveBayes(AbstractNaiveBayes):
                 bin = attr_bins[i][l]
                 if bin.counter == 0:
                     bin.counter += 1
-                    size += 1
+                    sizes[i] += 1
 
         # fill probs
         for i in range(self.attr_count):
             for j in range(len(X)):
                 for l in range(len(attr_bins[i])):
                     bin = attr_bins[i][l]
-                    bin.prob = bin.counter / size
+                    bin.prob = bin.counter / sizes[i]
 
         return attr_bins
 

@@ -28,7 +28,7 @@ class EntropyDiscreteNaiveBayes(AbstractNaiveBayes):
                         attr_bins[i][l].counter += 1
         # print(attr_bins)
 
-        size = len(X)  # will be increased, because of smoothing
+        sizes = [len(X)] * self.attr_count  # will be increased, because of smoothing
 
         # fix all bins counters with +1 if zero (smoothing)
         for i in range(self.attr_count):
@@ -36,7 +36,7 @@ class EntropyDiscreteNaiveBayes(AbstractNaiveBayes):
                 bin = attr_bins[i][l]
                 if bin.counter == 0:
                     bin.counter += 1
-                    size += 1
+                    sizes[i] += 1
         # print(attr_bins)
 
         # fill probs
@@ -44,7 +44,7 @@ class EntropyDiscreteNaiveBayes(AbstractNaiveBayes):
             for j in range(len(X)):
                 for l in range(len(attr_bins[i])):
                     bin = attr_bins[i][l]
-                    bin.prob = bin.counter / size
+                    bin.prob = bin.counter / sizes[i]
 
         return attr_bins
 
