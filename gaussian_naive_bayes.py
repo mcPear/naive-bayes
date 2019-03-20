@@ -28,13 +28,10 @@ class GaussianNaiveBayes(AbstractNaiveBayes):
     def get_attr_by_class_measures(self, X, y):
         data = utils.merge_attrs(X, y)
         class_index = utils.get_class_index(data)
-        result = dict()
+        result = self.get_empty_classes_dict([])
         for record in data:
             class_key = record[class_index]
-            if class_key in result:
-                result[class_key].append(record)
-            else:
-                result[class_key] = [record]
+            result[class_key].append(record)
         for key in result:
             class_X, class_y = utils.horizontal_split(result[key])
             result[key] = self.get_attr_measures(class_X, class_y)

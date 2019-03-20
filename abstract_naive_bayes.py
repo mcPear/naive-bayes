@@ -8,12 +8,9 @@ class AbstractNaiveBayes(BaseEstimator):
         return len(X[0])
 
     def get_class_probs(self, X, y):
-        classes = self.get_params()['classes']
         data = utils.merge_attrs(X, y)
         class_index = utils.get_class_index(data)
-        result = dict()
-        for class_name in classes:
-            result[class_name] = 0
+        result = self.get_empty_classes_dict(0)
 
         for record in data:
             class_key = record[class_index]
@@ -21,6 +18,13 @@ class AbstractNaiveBayes(BaseEstimator):
 
         for key in result:
             result[key] = result[key] / len(data)
+        return result
+
+    def get_empty_classes_dict(self, empty_elem):
+        classes = self.get_params()['classes']
+        result = dict()
+        for class_name in classes:
+            result[class_name] = empty_elem
         return result
 
     def classify_many(self, X):
